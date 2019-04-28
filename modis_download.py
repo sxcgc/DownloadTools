@@ -8,6 +8,7 @@ from subprocess import call
 import os
 import glob
 import numpy as np
+import platform
 
 class MODIS_download():
       
@@ -51,10 +52,14 @@ class MODIS_download():
     def check(self,mode = "wget",addfilename = "wget_add.sh"):
         print("outputPath is {:s}".format(self.outputPath))
         print("modis_csv is {:s}".format(self.modis_csv))
-        download_file = glob.glob(self.outputPath+"\*.hdf")
-        print("all download file is :{:d}".format(len(download_file)))
-        a = [i.split("\\")[-1] for i in download_file]
+        if platform.system() == 'Windows':
+            download_file = glob.glob(self.outputPath+"\*.hdf")
+            a = [i.split("\\")[-1] for i in download_file]
+        elif platform.system()  == 'Linux':
+            download_file = glob.glob(self.outputPath+"/*.hdf")
+            a = [i.split("/")[-1] for i in download_file]
         #print(a)
+        print("all download file is :{:d}".format(len(download_file)))
         b = np.ones(len(a))
         all = pd.Series(data = b, index = a)
         output={}
@@ -70,9 +75,7 @@ class MODIS_download():
                 index += 1
                 index1 = self.quene_url[self.quene_url["fileUrls"] == P].index.tolist()[0]
                 for k in  keys:
-                    output[k].append(self.quene_url.iloc[index1][k])
-                
-                
+                    output[k].append(self.quene_url.iloc[index1][k])        
         output = pd.DataFrame(data = output)     
   				
         print("loss :{:d}".format(index))
