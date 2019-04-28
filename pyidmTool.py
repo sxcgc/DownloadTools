@@ -1,6 +1,15 @@
+"""
+作者：陈光灿
+联系方式：cgc@mail.ustc.edu.cn
+github.ustccgc.io
+"""
 import pandas as pd
 from subprocess import call
 import os
+import glob
+import numpy as np
+from modis_download import MODIS_download
+
 '''
 您可以从命令行中使用下列参数启动 IDM
 
@@ -25,16 +34,23 @@ IDMan.exe /d "http://www.internetdownloadmanager.com/path/File Name.zip"
 原文：https://blog.csdn.net/MuoYangoRen/article/details/79954776 
 版权声明：本文为博主原创文章，转载请附上博文链接！
 '''
-idmPath = r"C:\Program Files (x86)\Internet Download Manager"# idm的安装路径
-modis_csv = r"C:\Users\user\Downloads\example.csv"#modis的csv下载
+
+idmPath = r"D:\Program Files (x86)\Internet Download Manager"# idm的安装路径
+modis_csv = r"I:\LAADS_query.2019-04-27T02_52.csv"#modis的csv下载
 url_head = r"https://ladsweb.modaps.eosdis.nasa.gov"#modis路径
-outputPath = r"C:\MYD"
-os.chdir(idmPath)
-quene_url = pd.read_csv(modis_csv)
+outputPath = r"I:\MYD"
+
+a = MODIS_download(idmPath,modis_csv,url_head,outputPath)
+bbb = a.check()
+
+#quene_url = pd.read_csv(modis_csv)
 #batfileoutput = open(outputPath+"download.bat","w")
 #batfileoutput.writelines("D:\n")
 #batfileoutput.writelines("cd {:s}\n".format(idmPath))
-index = 0
+	
+
+	
+'''	
 for P in quene_url["fileUrls"]:
     index = index + 1
     print(index)
@@ -44,3 +60,5 @@ for P in quene_url["fileUrls"]:
     call(['IDMan','/d',url_head+P,'/p',outputPath,'/f',P.split('/')[-1],'/n','/a'])
 	
 print(quene_url["size"].sum()/1024/1024/1024,end =" G\n")
+
+'''
