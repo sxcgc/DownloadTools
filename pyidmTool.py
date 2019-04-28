@@ -41,7 +41,7 @@ url_head = r"https://ladsweb.modaps.eosdis.nasa.gov"#modis路径
 outputPath = r"I:\MYD"
 
 a = MODIS_download(idmPath,modis_csv,url_head,outputPath)
-bbb = a.check()
+bbb = a.check('idman')
 
 #quene_url = pd.read_csv(modis_csv)
 #batfileoutput = open(outputPath+"download.bat","w")

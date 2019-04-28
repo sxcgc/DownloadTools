@@ -49,7 +49,7 @@ class MODIS_download():
     def calcTotal(self):
           print(self.quene_url["size"].sum()/1024/1024/1024,end =" G\n")
           
-    def check(self,mode = "wget",addfilename = "wget_add.sh"):
+    def check(self,mode = "wget",addfilename = ""):
         print("outputPath is {:s}".format(self.outputPath))
         print("modis_csv is {:s}".format(self.modis_csv))
         if platform.system() == 'Windows':
@@ -80,12 +80,15 @@ class MODIS_download():
   				
         print("loss :{:d}".format(index))
         if mode == "idman" :
-            addfilename = "idman_add.csv"
+            if addfilename =='':
+                addfilename = "idman_add.csv"
             self.quene_temp = self.quene_url
             self.quene_url = output
-            self.idman()
+            output.to_csv(addfilename,index = False)
             self.quene_url = self.quene_temp
         elif mode == "wget":
+            if addfilename =='':
+                addfilename = 'wget_add.sh'
             print(addfilename)
             self.quene_temp = self.quene_url
             self.quene_url = output
